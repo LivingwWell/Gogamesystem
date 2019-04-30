@@ -7,12 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.gogamesystem.fragment.HomeFragment;
 import com.example.gogamesystem.R;
 import com.example.gogamesystem.fragment.RootFragment;
 import com.example.gogamesystem.fragment.UserFragment;
+import com.example.gogamesystem.fragment.UserInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.fragment.app.Fragment;
@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private UserFragment userfragment;
     private RootFragment rootfragment;
     private HomeFragment homefragment;
-    private Fragment[] fragments;
     private FragmentTransaction transaction;
+    private UserInfoFragment userInfoFragment;;
     private FragmentManager manager;
 
     private int lastfragment;
@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
                     showFragment(userfragment);
                     return true;
                 case R.id.navigation_notifications:
-                    if (rootfragment == null)
-                        rootfragment = new RootFragment();
-                    showFragment(rootfragment);
+                    if (userInfoFragment == null)
+                        userInfoFragment = new UserInfoFragment();
+                    showFragment(userInfoFragment);
                     return true;
             }
             return false;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         homefragment = new HomeFragment();
         showFragment(homefragment);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_user);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Bmob.initialize(this, "2f3e726c9b378464155469629671756b");
     }

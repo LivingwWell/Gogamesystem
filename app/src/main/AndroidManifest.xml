@@ -40,6 +40,10 @@
         <activity android:name=".activity.RegActvity"/>
         <activity android:name=".activity.UpdataActivity"/>
         <activity android:name=".activity.PayActivity"/>
+
+        <activity android:name=".activity.RootActivity">
+
+        </activity>
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.example.gogamesystem.BmobContentProvider">

@@ -31,7 +31,7 @@ public class LoginAcivity extends AppCompatActivity {
     Button btRegistered;
     @BindView(R.id.textView)
     TextView textView;
-
+    public static String  user_name;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +44,11 @@ public class LoginAcivity extends AppCompatActivity {
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.bt_login) {
+            if (layoutname.getEditText().getText().toString().trim().equals("root")&&
+            layoutpsw.getEditText().getText().toString().trim().equals("root")){
+                            Intent intent=new Intent(LoginAcivity.this,RootActivity.class);
+                            startActivity(intent);
+            }
             login();
         } else if (viewId == R.id.bt_registered) {
             Intent intent = new Intent(LoginAcivity.this, RegActvity.class);
@@ -62,6 +67,7 @@ public class LoginAcivity extends AppCompatActivity {
             @Override
             public void done(BmobUser bmobUser, BmobException e) {
                 if (e == null) {
+                   user_name=layoutname.getEditText().getText().toString();
                     Intent intent = new Intent(LoginAcivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {

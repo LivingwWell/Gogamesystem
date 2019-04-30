@@ -29,7 +29,7 @@ public class User extends BmobUser {
         this.ID_num = ID_num;
     }
 
-    public String isSex() {
+    public String getSex() {
         return sex;
     }
 
@@ -67,5 +67,18 @@ public class User extends BmobUser {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", ID_num='" + ID_num + '\'' +
+                ", sex='" + sex + '\'' +
+                ", age=" + age +
+                ", club='" + club + '\'' +
+                ", problem='" + problem + '\'' +
+                ", answer='" + answer + '\'' +
+                '}';
     }
 }
