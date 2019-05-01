@@ -7,11 +7,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gogamesystem.R;
-import com.google.android.material.textfield.TextInputLayout;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.gogamesystem.R;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +34,10 @@ public class LoginAcivity extends AppCompatActivity {
     Button btRegistered;
     @BindView(R.id.textView)
     TextView textView;
-    public static String  user_name;
+    public static String user_name;
+    @BindView(R.id.constraint)
+    ConstraintLayout constraint;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,20 +46,20 @@ public class LoginAcivity extends AppCompatActivity {
         Bmob.initialize(this, "2f3e726c9b378464155469629671756b");
     }
 
-    @OnClick({R.id.bt_login, R.id.bt_registered,R.id.textView})
+    @OnClick({R.id.bt_login, R.id.bt_registered, R.id.textView})
     public void onClick(View view) {
         int viewId = view.getId();
         if (viewId == R.id.bt_login) {
-            if (layoutname.getEditText().getText().toString().trim().equals("root")&&
-            layoutpsw.getEditText().getText().toString().trim().equals("root")){
-                            Intent intent=new Intent(LoginAcivity.this,RootActivity.class);
-                            startActivity(intent);
+            if (layoutname.getEditText().getText().toString().trim().equals("root") &&
+                    layoutpsw.getEditText().getText().toString().trim().equals("root")) {
+                Intent intent = new Intent(LoginAcivity.this, RootActivity.class);
+                startActivity(intent);
             }
             login();
         } else if (viewId == R.id.bt_registered) {
             Intent intent = new Intent(LoginAcivity.this, RegActvity.class);
             startActivity(intent);
-        }else if (viewId==R.id.textView){
+        } else if (viewId == R.id.textView) {
             Intent intent2 = new Intent(LoginAcivity.this, UpdataActivity.class);
             startActivity(intent2);
         }
@@ -67,11 +73,11 @@ public class LoginAcivity extends AppCompatActivity {
             @Override
             public void done(BmobUser bmobUser, BmobException e) {
                 if (e == null) {
-                   user_name=layoutname.getEditText().getText().toString();
+                    user_name = layoutname.getEditText().getText().toString();
                     Intent intent = new Intent(LoginAcivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(LoginAcivity.this, "用户名和密码不对", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(constraint, "", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

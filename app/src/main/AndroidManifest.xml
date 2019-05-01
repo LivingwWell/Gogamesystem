@@ -44,6 +44,8 @@
         <activity android:name=".activity.RootActivity">
 
         </activity>
+        <activity android:name=".activity.VsInfoActivity"/>
+        <activity android:name=".activity.UserInfoActivity"/>
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.example.gogamesystem.BmobContentProvider">

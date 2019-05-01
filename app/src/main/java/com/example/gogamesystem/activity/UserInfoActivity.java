@@ -1,22 +1,18 @@
-package com.example.gogamesystem.fragment;
+package com.example.gogamesystem.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gogamesystem.R;
-import com.example.gogamesystem.activity.LoginAcivity;
 import com.example.gogamesystem.bean.Game;
 import com.example.gogamesystem.bean.User;
+import com.example.gogamesystem.fragment.UserInfoFragment;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -24,14 +20,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 import static com.example.gogamesystem.activity.LoginAcivity.user_name;
+import static com.example.gogamesystem.activity.VsInfoActivity.vsname;
 
-public class UserInfoFragment extends Fragment {
+public class UserInfoActivity extends AppCompatActivity {
     @BindView(R.id.info_user)
     TextView infoUser;
     @BindView(R.id.info_name)
@@ -44,24 +40,22 @@ public class UserInfoFragment extends Fragment {
     TextView infoClub;
     @BindView(R.id.info_win)
     TextView infoWin;
-    Unbinder unbinder;
     @BindView(R.id.button5)
     Button button5;
     @BindView(R.id.info_qifeng)
     TextView infoQifeng;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_info, container, false);
-        unbinder = ButterKnife.bind(this, view);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_userinfo);
+        ButterKnife.bind(this);
         initView();
-        return view;
     }
 
     private void initView() {
         BmobQuery<User> query = new BmobQuery<User>();
-        query.addWhereEqualTo("username", user_name);
+        query.addWhereEqualTo("username", vsname);
         query.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
@@ -79,18 +73,6 @@ public class UserInfoFragment extends Fragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
-
-    @OnClick(R.id.button5)
-    public void onClick() {
-        Intent intent = new Intent(UserInfoFragment.this.getActivity(), LoginAcivity.class);
-        startActivity(intent);
     }
 
     int winnum;
@@ -146,5 +128,11 @@ public class UserInfoFragment extends Fragment {
             method = "关子胜";
         }
         return method;
+    }
+
+    @OnClick(R.id.button5)
+    public void onClick() {
+        Intent intent = new Intent(UserInfoActivity.this, LoginAcivity.class);
+        startActivity(intent);
     }
 }

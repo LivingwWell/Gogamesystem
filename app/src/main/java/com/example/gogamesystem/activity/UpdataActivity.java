@@ -41,7 +41,6 @@ public class UpdataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updatea);
         ButterKnife.bind(this);
-
     }
     boolean isproblem;
     boolean isanswer;

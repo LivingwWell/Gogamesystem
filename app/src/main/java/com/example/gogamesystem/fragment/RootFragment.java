@@ -40,7 +40,6 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class RootFragment extends Fragment {
     Unbinder unbinder;
-
     @BindView(R.id.rec_root)
     RecyclerView recyclerView;
     @BindView(R.id.fb)
@@ -51,7 +50,8 @@ public class RootFragment extends Fragment {
     ConstraintLayout constra;
     private List<Game> gameList;
     private GameAdapter gameAdapter;
-
+   public static String title1;
+   public static String getid;
     @SuppressLint("ResourceAsColor")
     @Nullable
     @Override
@@ -116,6 +116,8 @@ public class RootFragment extends Fragment {
     BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            title1=gameList.get(position).getName();
+            getid=gameList.get(position).getObjectId();
             VsDialog vsDialog=new VsDialog(getActivity());
             vsDialog.show();
         }
