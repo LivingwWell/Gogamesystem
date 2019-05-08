@@ -179,7 +179,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 if (e==null){
                     for (int i=0;i<list.size();i++){
                         Log.i("getGame","参加过的比赛："+ list.get(i).getName());
-                        buf.append(list.get(i).getName()+"\n");
+                        buf.append(list.get(i).getDate()+"\n"+list.get(i).getName()+"\n");
                         infoGame.setText(buf.toString());
                     }
                     Log.i("getGame","buf："+ buf.toString());

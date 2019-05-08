@@ -9,6 +9,15 @@ public class Game extends BmobObject {
     public String victory;//胜利方
     public String defeat;//失败方
     public String method;//胜法
+    public String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getName() {
         return name;
