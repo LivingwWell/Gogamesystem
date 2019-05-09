@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static com.example.gogamesystem.activity.LoginAcivity.user_name;
 
@@ -38,7 +39,7 @@ public class PayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pay);
         ButterKnife.bind(this);
         Intent intent=getIntent();
-         gameName= (String) intent.getSerializableExtra("GameName");
+        gameName= (String) intent.getSerializableExtra("GameName");
         Log.d("PayActivity", "GameName: "+gameName+user_name);
     }
 
@@ -58,7 +59,19 @@ public class PayActivity extends AppCompatActivity {
             public void done(List<Game> list, BmobException e) {
                 if (e==null){
                     Log.i("PayActivity", "成功：" +list.get(0).toString());
-                    list.get(0).setBlack(user_name);
+                    String id=list.get(0).getObjectId();
+                    Game game=new Game();
+                    game.setBlack(user_name);
+                    game.update(id, new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e==null){
+                                Log.i("PayActivity", "成功：" +game.getBlack());
+                            }else {
+                                Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                            }
+                        }
+                    });
                     Log.i("PayActivity", "成功：" +list.get(0).toString());
                 }else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
