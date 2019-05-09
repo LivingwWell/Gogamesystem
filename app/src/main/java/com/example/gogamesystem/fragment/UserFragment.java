@@ -64,7 +64,9 @@ public class UserFragment extends Fragment {
                     gameAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
                             Intent intent = new Intent(getActivity(), PayActivity.class);
+                            intent.putExtra("GameName",gameList.get(position).name);
                             startActivity(intent);
                         }
                     });

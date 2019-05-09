@@ -31,7 +31,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 import static com.example.gogamesystem.activity.LoginAcivity.user_name;
-import static com.example.gogamesystem.activity.VsInfoActivity.vsname;
 
 public class UserInfoFragment extends Fragment {
     @BindView(R.id.info_user)
@@ -54,8 +53,10 @@ public class UserInfoFragment extends Fragment {
     TextView infoGame;
     @BindView(R.id.infosex)
     TextView infosex;
-
     Unbinder unbinder;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class UserInfoFragment extends Fragment {
 
     private void initView() {
         BmobQuery<User> query = new BmobQuery<User>();
-        query.addWhereEqualTo("username", vsname);
+        query.addWhereEqualTo("username", user_name);
         query.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
@@ -123,25 +124,26 @@ public class UserInfoFragment extends Fragment {
         });
         //这里你查询了Victory 后还要在查询词defeat 最后才得出结果这样才是正确的,这也是按照逻辑的方法走的,该怎么去包装就得要想一下了
     }
+
     //查询男女比例
     public void getSex() {
-        BmobQuery<User> man=new BmobQuery<User>();
-        man.addWhereEqualTo("sex","男");
+        BmobQuery<User> man = new BmobQuery<User>();
+        man.addWhereEqualTo("sex", "男");
         man.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
-                int mannum=list.size();
-                BmobQuery<User> woman=new BmobQuery<User>();
-                woman.addWhereEqualTo("sex","女");
+                int mannum = list.size();
+                BmobQuery<User> woman = new BmobQuery<User>();
+                woman.addWhereEqualTo("sex", "女");
                 woman.findObjects(new FindListener<User>() {
                     @Override
                     public void done(List<User> list, BmobException e) {
-                        int womanum=list.size();
+                        int womanum = list.size();
                         NumberFormat numberFormat = NumberFormat.getInstance();
                         numberFormat.setMaximumFractionDigits(2);
                         String result = numberFormat.format((float) mannum / (float) (mannum + womanum) * 100);
                         Log.d("UserInfoActivity", "winnum: " + mannum + "defeatnum:" + womanum);
-                        infosex.setText("男生为"+result + "%");
+                        infosex.setText("男生为" + result + "%");
                     }
                 });
             }
@@ -151,6 +153,7 @@ public class UserInfoFragment extends Fragment {
     int zhongnum;
     int guannum;
     String method;
+
     //棋风查询
     public String getMethod() {
         BmobQuery<Game> zhong = new BmobQuery<Game>();
@@ -179,31 +182,37 @@ public class UserInfoFragment extends Fragment {
 
     //查询参加过的比赛
     public void getGame() {
-        StringBuffer buf=new StringBuffer();
-        BmobQuery<Game> eq1=new BmobQuery<>();
-        eq1.addWhereEqualTo("black",infoUser.getText());
-        BmobQuery<Game> eq2=new BmobQuery<>();
-        eq2.addWhereEqualTo("white",infoUser.getText());
-        List<BmobQuery<Game>> andQuerys=new ArrayList<BmobQuery<Game>>();
+        StringBuffer buf = new StringBuffer();
+        BmobQuery<Game> eq1 = new BmobQuery<>();
+        eq1.addWhereEqualTo("black", infoUser.getText());
+        BmobQuery<Game> eq2 = new BmobQuery<>();
+        eq2.addWhereEqualTo("white", infoUser.getText());
+        List<BmobQuery<Game>> andQuerys = new ArrayList<BmobQuery<Game>>();
         andQuerys.add(eq1);
         andQuerys.add(eq2);
-        BmobQuery<Game> query=new BmobQuery<>();
+        BmobQuery<Game> query = new BmobQuery<>();
         query.or(andQuerys);
         query.findObjects(new FindListener<Game>() {
             @Override
             public void done(List<Game> list, BmobException e) {
-                if (e==null){
-                    for (int i=0;i<list.size();i++){
-                        Log.i("getGame","参加过的比赛："+ list.get(i).getName());
-                        buf.append(list.get(i).getName()+"\n");
+                if (e == null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.i("getGame", "参加过的比赛：" + list.get(i).getName());
+                        if (list.get(i).getVictory().equals(user_name)) {
+                            buf.append(list.get(i).getName() + "\n" + "胜" + "\n");
+                        } else {
+                            buf.append(list.get(i).getName() + "\n" + "负" + "\n");
+                        }
+
                         infoGame.setText(buf.toString());
                     }
-                    Log.i("getGame","buf："+ buf.toString());
-                }else { Log.i("getGame","失败："+e.getMessage()+","+e.getErrorCode());}
+                    Log.i("getGame", "buf：" + buf.toString());
+                } else {
+                    Log.i("getGame", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
             }
         });
     }
-
 
 
     @Override

@@ -197,7 +197,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/info_game" />
 
             <TextView
-                android:id="@+id/infosex"
+                android:id="@+id/infosex1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
