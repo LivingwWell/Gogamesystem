@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -16,7 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -27,12 +30,11 @@ import com.example.gogamesystem.bean.Game;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -76,7 +78,7 @@ public class VsDialog extends Dialog {
         lp.height = 1920;
         lp.width = 1080;
 
-        Date date=new Date(System.currentTimeMillis());
+        Date date = new Date(System.currentTimeMillis());
         txDate.setText(getTime(date));
         win.setAttributes(lp);
     }
@@ -102,6 +104,7 @@ public class VsDialog extends Dialog {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
+
     private void setGame() {
         Game game = new Game();
         game.setBlack(blackName.getText().toString());
@@ -135,7 +138,6 @@ public class VsDialog extends Dialog {
                 break;
         }
     }
-
 
 
     @OnClick({R.id.button4, R.id.tx_date})
@@ -176,5 +178,18 @@ public class VsDialog extends Dialog {
                 pvTime.show();
                 break;
         }
+    }
+
+    @OnTouch({R.id.black_info, R.id.whlite_info})
+    public boolean onTouch(View view, MotionEvent event) {
+        switch (view.getId()) {
+            case R.id.black_info:
+                     blackName.setText("小李");
+                break;
+            case R.id.whlite_info:
+              whliteName.setText("小张");
+                break;
+        }
+        return true;
     }
 }

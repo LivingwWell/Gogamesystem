@@ -1,5 +1,7 @@
 package com.example.gogamesystem.bean;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 
 public class Game extends BmobObject {
@@ -10,6 +12,9 @@ public class Game extends BmobObject {
     public String defeat;//失败方
     public String method;//胜法
     public String date;
+
+
+
 
     public String getDate() {
         return date;
@@ -76,6 +81,9 @@ public class Game extends BmobObject {
                 ", victory='" + victory + '\'' +
                 ", defeat='" + defeat + '\'' +
                 ", method='" + method + '\'' +
+                ", date='" + date + '\'' +
                 '}';
     }
+
+
 }

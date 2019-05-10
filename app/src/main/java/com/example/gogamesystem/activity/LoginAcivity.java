@@ -77,7 +77,7 @@ public class LoginAcivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginAcivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
-                    Snackbar.make(constraint, "", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(constraint, "密码或用户名不对", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
