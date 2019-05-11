@@ -1,8 +1,11 @@
 package com.example.gogamesystem.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -26,16 +29,22 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.gogamesystem.R;
 import com.example.gogamesystem.bean.Game;
+import com.example.gogamesystem.bean.Join;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import static com.example.gogamesystem.fragment.RootFragment.getid;
@@ -64,6 +73,9 @@ public class VsDialog extends Dialog {
     private String radio1;
     private String radio2;
 
+    public List list1;
+    public String[] array;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +89,13 @@ public class VsDialog extends Dialog {
         lp.gravity = Gravity.CENTER;
         lp.height = 1920;
         lp.width = 1080;
-
+        //始终不弹键盘
+        blackName.setInputType(InputType.TYPE_NULL);
+        whliteName.setInputType(InputType.TYPE_NULL);
         Date date = new Date(System.currentTimeMillis());
         txDate.setText(getTime(date));
         win.setAttributes(lp);
+        Inquire();
     }
 
 
@@ -182,14 +197,72 @@ public class VsDialog extends Dialog {
 
     @OnTouch({R.id.black_info, R.id.whlite_info})
     public boolean onTouch(View view, MotionEvent event) {
-        switch (view.getId()) {
-            case R.id.black_info:
-                     blackName.setText("小李");
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: //手指按下
+                switch (view.getId()) {
+                    case R.id.black_info:
+                        showSingDialog(1);
+                        break;
+                    case R.id.whlite_info:
+                        showSingDialog(2);
+                        break;
+                }
                 break;
-            case R.id.whlite_info:
-              whliteName.setText("小张");
+            case MotionEvent.ACTION_MOVE: //手指移动（从手指按下到抬起 move多次执行）
+                break;
+            case MotionEvent.ACTION_UP: //手指抬起
+
                 break;
         }
-        return true;
+        return false;
     }
+
+
+    private void Inquire() {
+        BmobQuery<Game> joinBmobQuery = new BmobQuery<Game>();
+        joinBmobQuery.addWhereEqualTo("name", txTitle.getText().toString());
+        joinBmobQuery.findObjects(new FindListener<Game>() {
+            @Override
+            public void done(List<Game> list, BmobException e) {
+                if (e == null) {
+                    Log.i("bmob", "查询成功：共" + list.size() + "条数据。" + list.get(0).getJoiners());
+                    list1 = list.get(0).getJoiners();
+                    array = (String[]) list1.toArray(new String[list1.size()]);
+                    System.out.println(Arrays.toString(array));
+                } else {
+                    Log.i("bmob", "失败：" + e.getMessage());
+                }
+            }
+        });
+    }
+
+    int Choice;
+
+    private void showSingDialog(int id) {
+        System.out.println("showSingDialog******\n" + Arrays.toString(array));
+        AlertDialog.Builder singleChoiceDialog = new AlertDialog.Builder(getContext());
+        singleChoiceDialog.setTitle("参赛选手");
+        singleChoiceDialog.setSingleChoiceItems(array, 0, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Choice = which;
+            }
+        });
+        singleChoiceDialog.setPositiveButton("确定", new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (id) {
+                    case 1:
+                        blackName.setText(array[Choice]);
+                        break;
+                    case 2:
+                        whliteName.setText(array[Choice]);
+                        break;
+                }
+
+            }
+        });
+        singleChoiceDialog.show();
+    }
+
 }

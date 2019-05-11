@@ -12,9 +12,15 @@ public class Game extends BmobObject {
     public String defeat;//失败方
     public String method;//胜法
     public String date;
+    public List<String> joiners;
 
+    public List<String> getJoiners() {
+        return joiners;
+    }
 
-
+    public void setJoiners(List<String> joiners) {
+        this.joiners = joiners;
+    }
 
     public String getDate() {
         return date;
